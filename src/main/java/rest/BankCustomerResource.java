@@ -2,6 +2,11 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.CustomerDTO;
+import entities.BankCustomer;
+import java.util.List;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 import utils.EMF_Creator;
 import facades.CustomerFacade;
 import javax.persistence.EntityManagerFactory;
@@ -13,15 +18,24 @@ import javax.ws.rs.core.MediaType;
 @Path("bankcustomer")
 public class BankCustomerResource {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+    private final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
        
-    private static final CustomerFacade FACADE =  CustomerFacade.getCustomerFacade(EMF);
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+    private final CustomerFacade facade =  CustomerFacade.getCustomerFacade(EMF);
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String demo() {
-        return "{\"msg\":\"Hello World\"}";
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomerById(@PathParam("id") long id) {
+        CustomerDTO customerDTOS = facade.getCustomerById(id);
+        return Response.ok(gson.toJson(customerDTOS)).build();
     }
 
+    @GET
+    @Path("all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllCustomers() {
+        List<BankCustomer> customerDTOS = facade.getAllBankCustomers();
+        return Response.ok(gson.toJson(customerDTOS)).build();
+    }
 }
