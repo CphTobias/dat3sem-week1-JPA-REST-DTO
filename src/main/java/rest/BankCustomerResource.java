@@ -35,7 +35,17 @@ public class BankCustomerResource {
     @Path("all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCustomers() {
-        List<BankCustomer> customerDTOS = facade.getAllBankCustomers();
+        List<BankCustomer> customers = facade.getAllBankCustomers();
+        return Response.ok(gson.toJson(customers)).build();
+    }
+
+    @GET
+    @Path("/name/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomersByName(
+        @PathParam("name") String name
+    ) {
+        List<CustomerDTO> customerDTOS = facade.getCustomersByName(name);
         return Response.ok(gson.toJson(customerDTOS)).build();
     }
 }

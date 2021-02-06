@@ -60,7 +60,7 @@ public class CustomerFacade {
             .createQuery("SELECT b FROM BankCustomer b WHERE b.firstName = :name", BankCustomer.class)
             .setParameter("name", name);
         List<BankCustomer> bankCustomers = query.getResultList();
-        return CustomerDTO.getDtos(bankCustomers);
+        return CustomerDTO.getByList(bankCustomers);
     }
 
     public List<BankCustomer> getAllBankCustomers() {

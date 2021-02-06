@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
 import entities.BankCustomer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CustomerDTO {
     private long id;
@@ -15,12 +12,11 @@ public class CustomerDTO {
     private String accountNumber;
     private double balance;
 
-    public static List<CustomerDTO> getDtos(List<BankCustomer> bankCustomers){
-        List<CustomerDTO> customerDTOS = new ArrayList<>();
-        bankCustomers.forEach(bc -> customerDTOS.add(new CustomerDTO(bc)));
-        return customerDTOS;
+    public static List<CustomerDTO> getByList(List<BankCustomer> bankCustomers){
+        return bankCustomers.stream()
+            .map(bc -> new CustomerDTO(bc))
+            .collect(Collectors.toList());
     }
-
 
     public CustomerDTO(BankCustomer bc) {
         this.id = bc.getId();
